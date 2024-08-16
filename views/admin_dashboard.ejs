@@ -1,0 +1,117 @@
+<%- include('./partials/header'); %>
+
+    <body class="bg-gray-100">
+        <div class="flex flex-col min-h-screen">
+            <!-- Header -->
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                </div>
+            </header>
+
+            <!-- Main content -->
+            <main class="flex-1 overflow-y-auto">
+                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                    <!-- Dashboard Overview -->
+                    <div class="mb-8 bg-white shadow rounded-lg p-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">Dashboard Overview</h2>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="text-lg font-medium text-gray-600">Total Products</h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-900">
+                                    <%= prodcount %>
+                                </p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="text-lg font-medium text-gray-600">Total Categories</h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-900">
+                                    <%= categcount %>
+                                </p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="text-lg font-medium text-gray-600">New Orders</h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-900">30</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Create/Update Product Form -->
+                        <div class="bg-white shadow rounded-lg p-6">
+                            <h2 class="text-2xl font-semibold text-gray-800">Manage Products</h2>
+                            <form enctype="multipart/form-data" autocomplete="off" class="mt-4" action="/products"
+                                method="POST">
+                                <h3 class="text-lg font-medium text-gray-700">Create Product</h3>
+                                <div class="mt-2">
+                                    <input type="text" name="name" placeholder="Product Name" required
+                                        class="w-full p-2 border border-gray-300 rounded mt-2">
+                                </div>
+                                <div class="mt-2">
+                                    <input type="number" name="price" placeholder="Product Price" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-2">
+                                    <input type="text" name="category" placeholder="Category" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-2">
+                                    <textarea name="description" placeholder="Product Description" rows="4"
+                                        class="w-full p-2 border border-gray-300 rounded"></textarea>
+                                </div>
+                                <div class="mt-2">
+                                    <input type="number" name="stock" placeholder="Stock Quantity" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-2">
+                                    <input type="file" name="image" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="w-full bg-black text-white py-2 px-4 rounded hover:bg-black">
+                                        Create Product
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Delete Product Form -->
+                            <form autocomplete="off" class="mt-6" action="/products/delete" method="POST">
+                                <h3 class="text-lg font-medium text-gray-700">Delete Product</h3>
+                                <div class="mt-2">
+                                    <input type="text" name="product_id" placeholder="Product ID" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="w-full bg-black text-white py-2 px-4 rounded hover:bg-black">
+                                        Delete Product
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Create/Update Category Form -->
+                        <div class="bg-white shadow rounded-lg p-6">
+                            <h2 class="text-2xl font-semibold text-gray-800">Manage Categories</h2>
+                            <form autocomplete="off" class="mt-4" action="/categories/create" method="POST">
+                                <h3 class="text-lg font-medium text-gray-700">Create or Update Category</h3>
+                                <div class="mt-2">
+                                    <input type="text" name="name" placeholder="Category Name" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="w-full bg-black text-white py-2 px-4 rounded hover:bg-black">
+                                        Save Category
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </main>
+        </div>
+    </body>
+
+    <%- include('./partials/footer'); %>

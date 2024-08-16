@@ -1,0 +1,155 @@
+List of Models
+----------------------------------------------------------------
+1.  UserModel
+2.	ProductModel
+3.	CategoryModel
+4.	CartModel
+5.	OrderModel
+6.	PaymentModel
+7.	DeliveryModel
+8.	AdminModel
+9.	NotificationModel
+
+============================================================================
+UserModel
+----------------------------------------------------------------
+Purpose:
+The UserModel is where we keep all the important details about each user. It handles everything from login info to personal details, addresses, and order history. This model is key for managing what users do in the app, like placing orders, handling their cart, and checking their past orders.
+
+Fields:
+	•	name: The user’s full name.
+	•	email: The user’s email address, which we use to identify and contact them.
+	•	password: The user’s password (encrypted) for logging in (if we’re not only using Google OAuth).
+	•	phone: The user’s phone number for contacting them.
+	•	addresses: A list of their saved shipping addresses.
+	•	createdAt: The date and time when the user account was created.
+	•	googleId: (Optional) If the user logs in with Google, this is their unique Google ID.
+
+
+
+================================================================
+ProductModel
+----------------------------------------------------------------
+
+Purpose:
+The ProductModel is where we keep track of all the products available in the store. It includes everything from the product’s name and price to its stock level and description. This model is crucial for managing the items we sell.
+
+Fields:
+
+	•	name: The product’s name.
+	•	price: How much the product costs.
+	•	category: The category this product belongs to.
+	•	stock: How many of this product we have in stock.
+	•	description: Details about the product.
+	•	image: A link to the product’s image.
+
+
+
+
+================================================================
+CategoryModel
+----------------------------------------------------------------
+
+Purpose:
+The CategoryModel helps us organize products into different categories, making it easier for users to browse through what we offer.
+
+Fields:
+
+	•	name: The name of the category, like “Electronics” or “Groceries.”
+
+
+================================================================
+CartModel
+----------------------------------------------------------------
+
+Purpose:
+The CartModel keeps track of the items that a user adds to their cart before they decide to buy. It’s where we manage what users plan to purchase.
+
+Fields:
+
+	•	user: The user who owns this cart.
+	•	products: A list of products in the cart, including how many of each.
+	•	totalPrice: The total cost of everything in the cart.
+
+
+================================================================
+OrderModel
+----------------------------------------------------------------
+
+Purpose:
+The OrderModel records the details of each order placed by users. It covers everything from the items they bought to where the order is being shipped and its current status.
+
+Fields:
+
+	•	user: The user who placed the order.
+	•	products: The list of products in the order, with quantities.
+	•	totalPrice: The total cost of the order.
+	•	address: The shipping address for the order.
+	•	status: The current status of the order, like “Pending” or “Delivered.”
+	•	payment: Details about the payment made for the order.
+	•	delivery: Information about the delivery, like who’s handling it and tracking info.
+
+
+================================================================
+PaymentModel
+----------------------------------------------------------------
+
+Purpose:
+The PaymentModel manages all the payment details for orders. It includes how the payment was made, the amount, and the transaction status.
+
+Fields:
+
+	•	order: The order this payment is for.
+	•	amount: The amount paid.
+	•	method: How the payment was made, like via “Credit Card” or “UPI.”
+	•	status: The payment’s status, such as “Success” or “Failed.”
+	•	transactionId: A unique ID for the transaction.
+
+
+================================================================
+DeliveryModel
+----------------------------------------------------------------
+
+Purpose:
+The DeliveryModel tracks how orders are being delivered. It includes who’s handling the delivery, where the order is at the moment, and when it’s expected to arrive.
+
+Fields:
+
+	•	order: The order being delivered.
+	•	deliveryBoy: The person delivering the order.
+	•	status: The current delivery status, like “In Progress” or “Delivered.”
+	•	trackingUrl: A link to track the delivery online.
+	•	estimatedDeliveryTime: When the delivery is expected to arrive.
+
+
+
+================================================================
+AdminModel
+----------------------------------------------------------------
+
+Purpose:
+The AdminModel holds information about the admins who manage the store. It ensures only authorized users can make changes to products, orders, and other parts of the app.
+
+Fields:
+
+	•	name: The admin’s name.
+	•	email: The admin’s email address, used to log in.
+	•	password: The admin’s password (encrypted).
+	•	role: The admin’s role, like “Admin” or “Super Admin.”
+
+
+
+================================================================
+  NotificationModel (OPTIONAL)
+----------------------------------------------------------------
+
+
+Purpose:
+The NotificationModel keeps track of messages and alerts sent to users, such as order updates or promotional offers. It helps make sure users are informed about important events.
+
+Fields:
+
+	•	user: The user who received the notification.
+	•	message: The content of the notification.
+	•	read: Whether the user has read the notification or not.
+	•	createdAt: When the notification was sent.

@@ -1,0 +1,35 @@
+<%- include('./partials/header'); %>
+
+    <body class="bg-gray-100 flex items-center justify-center h-screen">
+        <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-semibold text-center text-gray-800">Admin Login</h2>
+            <form autocomplete="off" class="mt-8 space-y-6" action="/admin/login" method="POST">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email" class="sr-only">Email address</label>
+                        <input id="email" name="email" type="email" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-black-500 focus:border-black-500 focus:z-10 sm:text-sm"
+                            placeholder="Email address">
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-black-500 focus:border-black-500 focus:z-10 sm:text-sm"
+                            placeholder="Password">
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-black-600 hover:text-black-500">Forgot your password?</a>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blank-500">
+                        Sign in
+                    </button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <%- include('./partials/footer'); %>

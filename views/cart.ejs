@@ -1,0 +1,188 @@
+<%- include('./partials/header'); %>
+
+    <body class="bg-gray-100 font-sans">
+        <div class="max-w-screen-md mx-auto p-4">
+            <!-- Header -->
+            <div class="flex justify-between items-center py-4">
+                <button class="text-lg"><i class="ri-arrow-left-s-line"></i></button>
+                <h1 class="text-xl font-semibold">Checkout</h1>
+                <button class="text-lg">Share</button>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                <div class="flex items-center gap-4">
+                    <i
+                        class="w-10 h-10 flex items-center justify-center rounded bg-zinc-100 text-2xl ri-timer-line"></i>
+                    <div>
+                        <p class="text-sm font-medium">Delivery in <%= Math.floor((Math.random()*10)+3) %> minutes</p>
+                        <p class="text-xs text-gray-500">Shipment of 1 item</p>
+                    </div>
+                </div>
+                <% cart.forEach(elem=> { %>
+                    <div class="flex items-center mt-4">
+                        <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>" alt="<%= elem.name %>"
+                            class="w-16 h-16 rounded">
+                        <div class="ml-4">
+                            <p>
+                                <%= elem.name %>
+                            </p>
+                            <p class="text-xs text-gray-500">170 g</p>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="flex items-center justify-center bg-green-700 text-white rounded-md">
+                                <a href="/cart/remove/<%= elem._id %>" class="px-2 py-1 rounded"><i
+                                        class="ri-subtract-line"></i></a>
+                                <p class="mx-2">
+                                    <%= elem.quantity %>
+                                </p>
+                                <button class="px-2 py-1 rounded"><i class="ri-add-line"></i></button>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <p class="text-gray-500 line-through">₹<%= Number(elem.price)*Number(elem.quantity)+20
+                                        %>
+                                </p>
+                                <p>₹<%= Number(elem.price)*Number(elem.quantity)%>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <% })%>
+            </div>
+
+            <!-- Before You Checkout -->
+            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                <h2 class="text-lg font-semibold">Before you checkout</h2>
+                <div class="flex space-x-4 mt-4">
+                    <div class="flex flex-col items-center">
+                        <img src="https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg"
+                            alt="Product Image" class="h-24 rounded">
+                        <p class="text-sm text-center mt-2">Uncle Chipps Spicy Treat Flavour Potato Chips</p>
+                        <p class="text-xs text-gray-500">48 g</p>
+                        <button class="bg-green-700 text-white px-4 py-1 rounded mt-2">ADD</button>
+                        <p class="text-xs mt-2">₹20</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://m.media-amazon.com/images/I/61mQ-Q7HmCL._AC_UF1000,1000_QL80_.jpg"
+                            alt="Product Image" class="h-24 rounded">
+                        <p class="text-sm text-center mt-2">Coca-Cola Soft Drink (300 ml)</p>
+                        <p class="text-xs text-gray-500">300 ml</p>
+                        <button class="bg-green-700 text-white px-4 py-1 rounded mt-2">ADD</button>
+                        <p class="text-xs mt-2">₹40</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://www.dorita.se/media/catalog/product/9/0/900179-lay-s-saltet-potetgull-175g.jpg"
+                            alt="Product Image" class="h-24 rounded">
+                        <p class="text-sm text-center mt-2">Chheda's Golden Banana Chips (Rock Salt)</p>
+                        <p class="text-xs text-gray-500">170 g</p>
+                        <button class="bg-green-700 text-white px-4 py-1 rounded mt-2">ADD</button>
+                        <p class="text-xs mt-2">₹85</p>
+                        <p class="text-xs text-red-500">16% OFF</p>
+                    </div>
+                </div>
+                <div class="mt-4 text-center text-white bg-green-700 py-5 px-10 rounded-md">
+                    <h1 class="text-xl font-semibold">Get FREE delivery</h1>
+                    <p class="text-xs">Add products worth ₹236 more</p>
+                    <button
+                        class="text-sm bg-zinc-200 text-black px-10 py-3 rounded-xl font-semibold capitalize mt-6">See
+                        all coupons</button>
+                </div>
+            </div>
+
+            <!-- Bill Details -->
+            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                <h2 class="text-lg font-semibold">Bill details</h2>
+                <div class="mt-2">
+                    <div class="flex justify-between">
+                        <p class="text-sm">Items total</p>
+                        <p class="text-sm">₹<%= finalprice - 34 %>
+                        </p>
+                    </div>
+                    <div class="flex justify-between">
+                        <p class="text-sm">Delivery charge</p>
+                        <p class="text-sm">₹30</p>
+                    </div>
+                    <div class="flex justify-between">
+                        <p class="text-sm">Handling charge</p>
+                        <p class="text-sm">₹4</p>
+                    </div>
+                    <div class="flex justify-between font-bold mt-2">
+                        <p class="text-lg">Grand total</p>
+                        <p class="text-lg">₹<%= finalprice %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation -->
+            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                <div class="flex items-center">
+                    <img src="https://b.zmtcdn.com/data/fi_assets/9fbf0569f69bfef7d190c5b892ab0a521619355737.png"
+                        alt="Feeding India" class="w-12 h-12 rounded">
+                    <div class="ml-4">
+                        <p class="font-semibold">Feeding India donation</p>
+                        <p class="text-sm opacity-50">Working towards a malnutrition free India. Feeding India...<span
+                                class="text-blue-500">read more</span></p>
+                    </div>
+                    <p class="ml-auto text-sm font-bold">₹1</p>
+                </div>
+            </div>
+
+            <!-- Delivery Instructions -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-lg font-semibold">Delivery instructions</h2>
+                <div class="flex space-x-4 mt-4">
+                    <button class="flex-1 flex flex-col items-center justify-center py-2 bg-gray-100 rounded">
+                        <i class="ri-mic-line"></i>
+                        <p class="text-sm">Record</p>
+                    </button>
+                    <button class="flex-1 flex flex-col items-center justify-center py-2 bg-gray-100 rounded">
+                        <i class="ri-prohibited-line"></i>
+                        <p class="leading-none text-sm">Avoid calling</p>
+                    </button>
+                    <button class="flex-1 flex flex-col items-center justify-center py-2 bg-gray-100 rounded">
+                        <i class="ri-notification-off-line"></i>
+                        <p class="text-sm">Don't ring the bell</p>
+                    </button>
+                    <button class="flex-1 flex flex-col items-center justify-center py-2 bg-gray-100 rounded">
+                        <i class="ri-door-open-line"></i>
+                        <p class="text-sm">Leave at door</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ordering for someone else -->
+            <div class="bg-white p-4 rounded-lg shadow mt-10">Ordering for someone else? Add details</div>
+            <!-- Cancellation Policy -->
+            <div class="bg-white p-4 rounded-lg shadow mb-40 mt-10">
+                <p class="text-sm">
+                    Orders cannot be cancelled once packed for delivery. In case of unexpected delays, a refund will be
+                    provided, if applicable.
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-white p-4 rounded-lg shadow fixed bottom-0 inset-x-0">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm">Delivering to Home</p>
+                        <p class="text-xs text-gray-500">1st Floor M2, 132C Apex Builders Sector C Indrauri, saarthi...
+                        </p>
+                    </div>
+                    <button class="text-blue-500">Change</button>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                    <div>
+                        <p class="text-sm">PAY USING</p>
+                        <p class="text-xs text-gray-500">Paytm UPI</p>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">₹<%= finalprice %>
+                        </p>
+                        <button class="bg-green-700 text-white px-4 py-2 rounded">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <%- include('./partials/footer'); %>

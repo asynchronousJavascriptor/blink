@@ -1,0 +1,159 @@
+<%- include('./partials/header'); %>
+
+    <style>
+        .swiper-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            height: 200px;
+            background-color: #f0f0f0;
+        }
+    </style>
+
+    <body class="bg-gray-100 font-sans">
+        <div class="max-w-screen-lg mx-auto p-4">
+            <!-- Order Now Section -->
+            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold">Order Now</h2>
+                    <button class="text-blue-500">see all</button>
+                </div>
+                <div class="flex space-x-4 mt-4 overflow-x-auto">
+                    <% rnproducts.forEach(function(elem){ %>
+                        <div class="flex w-32 flex-shrink-0 flex-col items-center">
+                            <div class="relative">
+                                <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>"
+                                    alt="<%= elem.name %>" class="h-24 rounded">
+                            </div>
+                            <p class="text-sm text-center mt-2">
+                                <%= elem.name %>
+                            </p>
+                            <p class="text-xs text-gray-500 line-through">₹<%= Number(elem.price)+20 %>
+                            </p>
+                            <p class="font-bold">₹<%= elem.price %>
+                            </p>
+                            <button class="bg-green-700 text-white px-4 py-1 rounded mt-2">ADD</button>
+                        </div>
+                        <%}) %>
+                </div>
+            </div>
+
+            <!-- Offers Section -->
+            <div class="swiper-container my-10 w-full overflow-hidden">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide rounded-xl overflow-hidden">
+                        <a href="https://sheryians.com"><img class="w-full h-full object-cover"
+                                src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=720/layout-engine/2023-07/Pet-Care_WEB.jpg"
+                                alt=""></a>
+                    </div>
+                    <div class="swiper-slide rounded-xl overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=720/layout-engine/2023-07/pharmacy-WEB.jpg"
+                            alt="">
+                    </div>
+                    <div class="swiper-slide rounded-xl overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=720/layout-engine/2023-07/Pet-Care_WEB.jpg"
+                            alt="">
+                    </div>
+                    <div class="swiper-slide rounded-xl overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=720/layout-engine/2023-07/Pet-Care_WEB.jpg"
+                            alt="">
+                    </div>
+                    <div class="swiper-slide rounded-xl overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=720/layout-engine/2023-07/Pet-Care_WEB.jpg"
+                            alt="">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grocery & Kitchen Section -->
+            <% for(let key in products){ %>
+                <div class="bg-white p-4 rounded-lg shadow mb-10">
+                    <h2 class="text-lg font-semibold">
+                        <%= key %>
+                    </h2>
+                    <div class="grid grid-cols-4 gap-4 mt-4">
+                        <% products[key].forEach(elem=>{ %>
+                            <div class="flex flex-col items-center">
+                                <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>"
+                                    alt="<%= elem.name %>" class="w-24 rounded">
+                                <p class="text-sm text-center mt-2">
+                                    <%= elem.name %>
+                                </p>
+                                <a class="px-4 text-white text-xs rounded mt-2 inline-block py-1 bg-green-700"
+                                    href="/cart/add/<%= elem._id %>">ADD</a>
+                            </div>
+                            <%}) %>
+                    </div>
+                </div>
+                <% } %>
+
+                    <% if(somethingInCart){ %>
+                        <div class="py-20"></div>
+                        <!-- Footer -->
+                        <div class="bg-white p-4 rounded-lg shadow fixed bottom-0 inset-x-0">
+                            <div class="flex justify-between items-center mb-10">
+                                <div>
+                                    <p class="text-sm">Get FREE delivery</p>
+                                    <p class="text-xs text-gray-500">Add products worth ₹236 more</p>
+                                </div>
+                                <button class="text-blue-500">See all coupons</button>
+                            </div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div>
+                                    <%= cartCount %> Item
+                                </div>
+                                <a href="/cart"
+                                    class="flex items-center justify-center px-32 py-3 bg-green-700 text-white rounded-lg"><span
+                                        class="text-lg">Next</span><i class="text-2xl ri-arrow-right-s-fill"></i></a>
+                            </div>
+                        </div>
+                        <% } %>
+        </div>
+
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script>
+            var swiper = new Swiper('.swiper-container', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                coverflowEffect: {
+                    rotate: 10,
+                    stretch: 0,
+                    depth: 10,
+                    modifier: 1,
+                    slideShadows: true,
+                },
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+            });
+        </script>
+        <script>
+            // Save the scroll position to localStorage
+            window.addEventListener('scroll', function () {
+                localStorage.setItem('scrollPosition', window.scrollY);
+            });
+
+            // Restore the scroll position from localStorage
+            window.addEventListener('load', function () {
+                const scrollPosition = localStorage.getItem('scrollPosition');
+                if (scrollPosition) {
+                    window.scrollTo(0, scrollPosition);
+                }
+            });
+        </script>
+    </body>
+    <%- include('./partials/footer'); %>
