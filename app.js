@@ -7,11 +7,13 @@ const productRouter = require("./routes/product");
 const categoriesRouter = require("./routes/category");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
+const orderRouter = require("./routes/order");
 
 const expressSession = require("express-session");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
+const paymentRouter = require("./routes/payment");
 
 require("dotenv").config();
 require("./config/db");
@@ -40,5 +42,7 @@ app.use("/products", productRouter);
 app.use("/categories", categoriesRouter);
 app.use("/users", userRouter);
 app.use("/cart", cartRouter);
+app.use("/payment", paymentRouter);
+app.use("/order", orderRouter);
 
 app.listen(3000);

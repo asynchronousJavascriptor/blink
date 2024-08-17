@@ -1,50 +1,34 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-// Payment Schema with Mongoose Validation
-const paymentSchema = mongoose.Schema(
+const paymentSchema = new mongoose.Schema(
   {
-    order: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "order",
+    orderId: {
+      type: String,
       required: true,
+    },
+    paymentId: {
+      type: String,
+    },
+    signature: {
+      type: String,
     },
     amount: {
       type: Number,
       required: true,
-      min: 0,
     },
-    method: {
+    currency: {
       type: String,
       required: true,
     },
     status: {
       type: String,
-      required: true,
-    },
-    transactionID: {
-      type: String,
-      required: true,
-      unique: true,
+      default: "pending",
     },
   },
   { timestamps: true }
 );
 
-// Joi Validation Schema
-const validatePayment = (data) => {
-  const schema = Joi.object({
-    order: Joi.string().required(),
-    amount: Joi.number().min(0).required(),
-    method: Joi.string().required(),
-    status: Joi.string().required(),
-    transactionID: Joi.string().required(),
-  });
-
-  return schema.validate(data);
-};
-
 module.exports = {
   paymentModel: mongoose.model("payment", paymentSchema),
-  validatePayment,
 };

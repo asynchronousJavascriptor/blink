@@ -108,7 +108,8 @@
                     </div>
                     <div class="flex justify-between font-bold mt-2">
                         <p class="text-lg">Grand total</p>
-                        <p class="text-lg">₹<%= finalprice %></p>
+                        <p class="text-lg">₹<%= finalprice %>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -178,11 +179,73 @@
                     <div>
                         <p class="text-lg font-bold">₹<%= finalprice %>
                         </p>
-                        <button class="bg-green-700 text-white px-4 py-2 rounded">Place Order</button>
+                        <button class="paybtn bg-green-700 text-white px-4 py-2 rounded">Place Order</button>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            document.querySelector('.paybtn').onclick = function (e) {
+                axios.post('/payment/create/orderId')
+                    .then(function (response) {
+                        var options = {
+                            "key": "rzp_test_cAa3gCF0eP8i4R", // Enter the Key ID generated from the Dashboard
+                            "amount": response.data.amount, // Amount in currency subunits. Default currency is INR.
+                            "currency": response.data.currency,
+                            "name": "BlinkIt",
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": response.data.id,
+                            "handler": function (response) {
+                                axios.post('/payment/api/payment/verify', {
+                                    razorpayOrderId: response.razorpay_order_id,
+                                    razorpayPaymentId: response.razorpay_payment_id,
+                                    signature: response.razorpay_signature
+                                })
+                                    .then(function (response) {
+                                        let { razorpayOrderId, razorpayPaymentId, signature } = JSON.parse(response.config.data)
+                                        window.location.href = `/order/${razorpayOrderId}/${razorpayPaymentId}/${signature}`
+                                    })
+                                    .catch(function (error) {
+                                        console.error(error);
+                                    });
+                            },
+                            "prefill": {
+                                "name": "Harsh Sharma",
+                                "email": "harsh.sharma@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            alert('Payment Failed');
+                            alert('Error Code: ' + response.error.code);
+                            alert('Description: ' + response.error.description);
+                            alert('Source: ' + response.error.source);
+                            alert('Step: ' + response.error.step);
+                            alert('Reason: ' + response.error.reason);
+                            alert('Order ID: ' + response.error.metadata.order_id);
+                            alert('Payment ID: ' + response.error.metadata.payment_id);
+                        });
+                        rzp1.open();
+                        e.preventDefault();
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            };
+        </script>
     </body>
 
     <%- include('./partials/footer'); %>
