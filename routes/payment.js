@@ -45,7 +45,10 @@ router.post("/api/payment/verify", async (req, res) => {
       secret
     );
     if (result) {
-      const payment = await paymentModel.findOne({ orderId: razorpayOrderId });
+      const payment = await paymentModel.findOne({
+        orderId: razorpayOrderId,
+        status: "pending",
+      });
       payment.paymentId = razorpayPaymentId;
       payment.signature = signature;
       payment.status = "completed";

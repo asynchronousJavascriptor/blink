@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Route Map with OSM Geocoding and Real-Time Location</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        #inputs {
+            margin: 20px 0;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #ddd;
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: white;
+        }
+
+        .autocomplete-suggestion {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .autocomplete-suggestion:hover {
+            background-color: #f0f0f0;
+        }
+
+        .leaflet-top+.leaflet-right {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="inputs">
+        <form method="post" action="/order/address/<%= orderid %>">
+            <label for="end">Destination:</label>
+            <input type="text" name="address" id="end" placeholder="Enter destination">
+            <div id="suggestions" class="autocomplete-suggestions"></div>
+            <input type="submit" value="get order">
+        </form>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <script>
+        let startLatLng, endLatLng;
+        let userMarker;
+
+        // Initialize the map
+        const map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India as an example
+
+        // Load and display the tile layer on the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Track the user's location in real-time
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(position => {
+                startLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+                // Update the marker for the user's current location
+                if (userMarker) {
+                    userMarker.setLatLng(startLatLng).update();
+                } else {
+                    userMarker = L.marker(startLatLng).addTo(map)
+                        .bindPopup("You are here").openPopup();
+                }
+
+                // Center the map on the new location
+                map.setView(startLatLng, 13);
+            }, error => {
+                console.error("Error watching position:", error);
+            }, {
+                enableHighAccuracy: true,
+                timeout: 30000,
+                maximumAge: 0
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        // Set up the geocoder for destination input
+        const endInput = document.getElementById('end');
+        const suggestionsContainer = document.getElementById('suggestions');
+        const geocoder = L.Control.Geocoder.nominatim();
+
+        endInput.addEventListener('input', function () {
+            geocoder.geocode(endInput.value, function (results) {
+                suggestionsContainer.innerHTML = '';
+                results.forEach(function (result) {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.className = 'autocomplete-suggestion';
+                    suggestionItem.innerText = result.name;
+                    suggestionItem.addEventListener('click', function () {
+                        endInput.value = result.name;
+                        endLatLng = result.center;
+                        suggestionsContainer.innerHTML = ''; // Clear suggestions
+                        generateRoute();
+                    });
+                    suggestionsContainer.appendChild(suggestionItem);
+                });
+            });
+        });
+
+        // Function to generate a route between two locations
+        function generateRoute() {
+            if (!startLatLng || !endLatLng) {
+                alert("Please select valid locations.");
+                return;
+            }
+
+            // Remove any existing routing control
+            if (window.routingControl) {
+                map.removeControl(window.routingControl);
+            }
+
+            // Add the new routing control with the specified waypoints
+            window.routingControl = L.Routing.control({
+                waypoints: [
+                    startLatLng,
+                    endLatLng
+                ],
+                routeWhileDragging: true,
+            }).addTo(map);
+        }
+    </script>
+
+</body>
+
+</html>

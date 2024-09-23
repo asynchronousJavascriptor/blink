@@ -29,7 +29,11 @@ router.get("/", userIsLoggedIn, async function (req, res) {
 
     let finalprice = cart.totalPrice + 34;
 
-    res.render("cart", { cart: finalarray, finalprice: finalprice });
+    res.render("cart", {
+      cart: finalarray,
+      finalprice: finalprice,
+      userid: req.session.passport.user,
+    });
   } catch (err) {
     res.send(err.message);
   }
